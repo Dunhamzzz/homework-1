@@ -1,3 +1,9 @@
-#notification-area {
-    display: none;
+.error {
+    color: red;
+    border-color: red;
 }
+
+.success {
+    color: green;
+}
+

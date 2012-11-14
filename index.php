@@ -47,9 +47,10 @@ if(isset($_POST) && !empty($_POST)) {
         } else {
             $json = json_encode(array('success' => 1));
         }
-        
         echo $json;
         exit();
+    } else {
+        // It's midnight ZZZZZZzzzzz
     }
     
 }
@@ -67,13 +68,33 @@ if(isset($_POST) && !empty($_POST)) {
         $(function(){
             
             $('#contact-form').submit(function(e) {
-                //e.preventDefault();
+                var $messageBox = $('#notification-area');
+                
+                $messageBox.text('Loading..');
+                $('.help-block').slideUp().removeClass('error');
+                
+                e.preventDefault();
                 
                 $.ajax({
                     url: 'index.php',
                     data: $(this).serialize(),
+                    cache: false,
+                    type: 'post',
                     success: function(response) {
+                        if(response.success == 1) {
+                            $messageBox.addClass('success').text('Form Successful');
+                        } else {
+                            $messageBox.addClass('error').text('Please fix some errors');
+                            
+                            for(i in response.errors) {
+                                $('#' + response.errors[i] + '-feedback')
+                                    .addClass('error')
+                                    .text('Please enter a valid ' + response.errors[i])
+                                    .slideDown();
+                            }
+                        }
                         
+                        $messageBox.fadeIn();
                     }
                 });
             });
@@ -85,7 +106,7 @@ if(isset($_POST) && !empty($_POST)) {
     <body>
         <div class="container">
         <h1>Contact Form</h1>
-        <div id="notification-area"></div>
+        <p id="notification-area"></p>
         <form action="index.php" method="post" id="contact-form">
             <fieldset>
                 <legend>Enter your details below</legend>
