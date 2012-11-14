@@ -82,7 +82,8 @@ if(isset($_POST) && !empty($_POST)) {
                     type: 'post',
                     success: function(response) {
                         if(response.success == 1) {
-                            $messageBox.addClass('success').text('Form Successful');
+                            $messageBox.addClass('success').text('Form Successful, Thanks!');
+                            $('#contact-form').fadeOut('slow');
                         } else {
                             $messageBox.addClass('error').text('Please fix some errors');
                             
